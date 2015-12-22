@@ -2,15 +2,14 @@ import pygame
 
 
 class Camera:
-    def __init__(self, x, y, screen, tile_size):
+    def __init__(self, screen_w, screen_h, tile_size, x=0, y=0):
         self.x = x
         self.y = y
-        self.width = screen.get_width()//tile_size
-        self.height = screen.get_height()//tile_size
+        self.overlay_bottom_h = 6
+        self.overlay_side_w = 10
+        self.width = screen_w - self.overlay_side_w
+        self.height = screen_h - self.overlay_bottom_h
         self.tile_size = tile_size
-
-        self.disposition_x = 0
-        self.disposition_y = 0
 
     def draw(self, map, characters):
         surface = pygame.Surface((self.width * self.tile_size, self.height * self.tile_size))
@@ -31,13 +30,22 @@ class Camera:
 
         return surface
 
-    def move(self, dif_x, dif_y, map_width, map_height):
-        if map_width - self.width > self.x + dif_x >= 0 and self.disposition_x == 0:
-            self.x += dif_x
-        else:
-            self.disposition_x += dif_x
+    def center(self, map_width, map_height, player_x, player_y):
+        x = player_x - self.width//2
+        y = player_y - self.height//2
 
-        if map_height - self.height > self.y + dif_y >= 0 and self.disposition_y == 0:
-            self.y += dif_y
+        if map_width - self.width >= x:
+            if x >= 0:
+                self.x = x
+            else:
+                self.x = 0
         else:
-            self.disposition_y += dif_y
+            self.x = map_width - self.width
+
+        if map_height - self.height >= y:
+            if y >= 0:
+                self.y = y
+            else:
+                self.y = 0
+        else:
+            self.y = map_height - self.height

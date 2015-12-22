@@ -12,10 +12,13 @@ class Player():
         self.current_health = self.max_health
 
     def move(self, dif_x, dif_y, map):
-        if map.map[self.x + dif_x][self.y + dif_y].passable \
-                and map.width > self.x + dif_x >= 0 and map.height > self.y + dif_y >= 0:
-            self.x += dif_x
-            self.y += dif_y
-            return True  # if camera should be moved
+        if len(map.map) > self.x + dif_x >= 0 and len(map.map[self.x + dif_x]) > self.y + dif_y >= 0:
+            if map.map[self.x + dif_x][self.y + dif_y].passable \
+                    and map.width > self.x + dif_x >= 0 and map.height > self.y + dif_y >= 0:
+                self.x += dif_x
+                self.y += dif_y
+                return True  # if camera should be moved
+            else:
+                return False
         else:
             return False

@@ -1,12 +1,11 @@
 import pygame
-from player import Player
-from map import Map
+from in_game import Game
 from camera import Camera
 
 pygame.init()
 
-screen_w, screen_h = 40, 30
-tile_size = 20
+screen_w, screen_h = 40, 30  # in tiles
+tile_size = 20  # square, in pixels
 
 screen = pygame.display.set_mode((screen_w*tile_size, screen_h*tile_size))
 pygame.display.set_caption("Dungeon")
@@ -17,48 +16,22 @@ images = {"wall": pygame.image.load("pics/wall.png").convert(),
           "floor": pygame.image.load("pics/floor.png").convert(),
           "player": pygame.image.load("pics/player.png").convert()}
 
-player = Player(50, 50, images)
+camera = Camera(screen_w, screen_h, tile_size)
 
-map = Map(images)
-map.generate_map(100, 100)
+game = Game(images, camera)
 
-camera = Camera(30, 35, screen, tile_size)
-
-characters = {"player": player}
+state = game
 
 done = False
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_KP1:
-                if player.move(-1, 1, map):
-                    camera.move(-1, 1, map.width, map.height)
-            elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
-                if player.move(0, 1, map):
-                    camera.move(0, 1, map.width, map.height)
-            elif event.key == pygame.K_KP3:
-                if player.move(1, 1, map):
-                    camera.move(1, 1, map.width, map.height)
-            elif event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
-                if player.move(-1, 0, map):
-                    camera.move(-1, 0, map.width, map.height)
-            elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
-                if player.move(1, 0, map):
-                    camera.move(1, 0, map.width, map.height)
-            elif event.key == pygame.K_KP7:
-                if player.move(-1, -1, map):
-                    camera.move(-1, -1, map.width, map.height)
-            elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
-                if player.move(0, -1, map):
-                    camera.move(0, -1, map.width, map.height)
-            elif event.key == pygame.K_KP9:
-                if player.move(1, -1, map):
-                    camera.move(1, -1, map.width, map.height)
+        else:
+            state.handle_event(event)
 
-    screen.fill((255, 255, 255))
-    screen.blit(camera.draw(map, characters), (0, 0))
+    screen.fill((0, 0, 0))
+    screen.blit(state.draw(), (0, 0))
     clock.tick()
     pygame.display.flip()
 
