@@ -5,8 +5,8 @@ class Camera:
     def __init__(self, screen_w, screen_h, tile_size, x=0, y=0):
         self.x = x
         self.y = y
-        self.overlay_bottom_h = 6
-        self.overlay_side_w = 10
+        self.overlay_bottom_h = 0
+        self.overlay_side_w = 0
         self.width = screen_w - self.overlay_side_w
         self.height = screen_h - self.overlay_bottom_h
         self.tile_size = tile_size
@@ -17,7 +17,7 @@ class Camera:
         # draw map
         for x in range(0, self.width):
             for y in range(0, self.height):
-                object = map.map[self.x + x][self.y + y]  # map object
+                object = map.map[(self.x + x, self.y + y)]  # map object
                 destination = ((object.x - self.x)*self.tile_size, (object.y - self.y)*self.tile_size)
                 surface.blit(object.image, destination)
 
