@@ -4,8 +4,8 @@ from camera import Camera
 
 pygame.init()
 
-screen_w, screen_h = 40, 30  # in tiles
-tile_size = 20  # square, in pixels
+screen_w, screen_h = 100, 100  # in tiles
+tile_size = 7  # square, in pixels
 
 screen = pygame.display.set_mode((screen_w*tile_size, screen_h*tile_size))
 pygame.display.set_caption("Dungeon")
