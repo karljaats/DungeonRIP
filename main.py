@@ -1,37 +1,28 @@
 import pygame
+import shared_vars
 from in_game import Game
-from camera import Camera
 
 pygame.init()
 
-screen_w, screen_h = 100, 100  # in tiles
-tile_size = 7  # square, in pixels
-
-screen = pygame.display.set_mode((screen_w*tile_size, screen_h*tile_size))
+screen = pygame.display.set_mode((shared_vars.screen_w * shared_vars.tile_size, shared_vars.screen_h * shared_vars.tile_size))
 pygame.display.set_caption("Dungeon")
 
 clock = pygame.time.Clock()
 
-images = {"wall": pygame.image.load("pics/wall.png").convert(),
-          "floor": pygame.image.load("pics/floor.png").convert(),
-          "player": pygame.image.load("pics/player.png").convert()}
+shared_vars.game = Game()
 
-camera = Camera(screen_w, screen_h, tile_size)
+shared_vars.state = shared_vars.game
 
-game = Game(images, camera)
-
-state = game
-
-done = False
-while not done:
+while not shared_vars.quit_game:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            done = True
+            shared_vars.quit_game = True
         else:
-            state.handle_event(event)
+            shared_vars.state.on_event(event)
 
-    screen.fill((0, 0, 0))
-    screen.blit(state.draw(), (0, 0))
+    shared_vars.state.update()
+    shared_vars.state.draw(screen)
+
     clock.tick()
     pygame.display.flip()
 

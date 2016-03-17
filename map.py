@@ -1,13 +1,6 @@
 import random
 from map_objects import *
 
-probabilities = {
-            "room": 70,
-            "corridor": 30
-        }
-# how many tries should be made
-tries = 300
-
 
 class Map:
     def __init__(self, images):
@@ -16,12 +9,15 @@ class Map:
         self.width = 0
         self.height = 0
 
-    # taken from http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm
+    # based on http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm
     # randomly picks tiles until it finds a wall of a room
     # and puts a random "feature" there if there's room for it
     def generate_map(self, size_x=100, size_y=100):
         self.width = size_x
         self.height = size_y
+
+        # how many tries should be made
+        tries = 100
 
         self.map = {}
 
@@ -115,8 +111,8 @@ class Map:
                         < self.width or not 0 < bottom_right[1] < self.height:
                     continue
                 enough_room = True
-                for k in range(bottom_right[0] - top_left[0]):
-                    for j in range(bottom_right[1] - top_left[1]):
+                for k in range(bottom_right[0] - top_left[0] + 1):  # +1s are because of coordinate subtraction...
+                    for j in range(bottom_right[1] - top_left[1] + 1):  # ...weirdness
                         if self.map[(top_left[0]+k, top_left[1]+j)] != "wall":
                             enough_room = False
                             break
@@ -136,7 +132,6 @@ class Map:
             # if it is a corridor we want
             # corridor is different because if it intercepts other stuff we want to still make it, but only to
             # the point where it met the other thing
-            # and we don't want to make it if it collided with the outer wall
             else:
                 if direction == "N":
                     for k in range(feature_height):
@@ -200,8 +195,14 @@ class Map:
     def create_feature_list(self):
         # creates a list of "features" for the map to be used with the random number generator
         # the list has the members multiple times in conjunction with their probabilities
-
         list = []
+
+        # does not have to add up to 100, can be anything
+        probabilities = {
+                    "room": 70,
+                    "corridor": 30
+                }
+
         for feature in probabilities:
             for i in range(probabilities[feature]):
                 list.append(feature)
