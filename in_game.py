@@ -9,7 +9,9 @@ class Game:
     def __init__(self):
         self.images = {"wall": pygame.image.load("pics/wall.png").convert(),
                        "floor": pygame.image.load("pics/floor.png").convert(),
-                       "player": pygame.image.load("pics/player.png").convert()}
+                       "player": pygame.image.load("pics/player.png").convert(),
+                       "stair_up": pygame.image.load("pics/stair_up.png").convert(),
+                       "stair_down": pygame.image.load("pics/stair_down.png").convert()}
 
         self.camera = Camera(shared_vars.screen_w, shared_vars.screen_h, shared_vars.tile_size)
 

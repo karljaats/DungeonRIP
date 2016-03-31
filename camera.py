@@ -9,6 +9,13 @@ class Camera:
         self.tile_size = tile_size
 
     def draw(self, screen, map, characters):
+        """
+        joonistab kõik ekraanile
+        :param screen: aken
+        :param map: kaart, listina
+        :param characters: dictionary NPC'dest, praegu implementeerimata
+        :return: aken
+        """
         # draw map
         for x in range(0, self.width):
             for y in range(0, self.height):
@@ -26,6 +33,13 @@ class Camera:
         return screen
 
     def center(self, map_width, map_height, player_x, player_y):
+        """
+        Muuda kaamera asukohta nii, et mängija on pildi keskel
+        :param map_width: kaardi laius, tile'ides
+        :param map_height: kaardi kõrgus, tile'ides
+        :param player_x: mängija x koordinaat, kaardi koordinaatides
+        :param player_y: mängija y koordinaat, kaardi koordinaatides
+        """
         x = player_x - self.width//2
         y = player_y - self.height//2
 

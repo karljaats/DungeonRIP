@@ -1,7 +1,7 @@
-state = None
-game = None  # state
+state = None  # praegune state
+game = None  # mängu objekt
 
-screen_w = 40  # in tiles
-screen_h = 30  # in tiles
-tile_size = 20  # square
+screen_w = 40  # tileides
+screen_h = 30  # tileides
+tile_size = 20  # tileid on ruudukujulised
 quit_game = False
