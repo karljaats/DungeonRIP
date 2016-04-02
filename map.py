@@ -1,6 +1,12 @@
 import random
 
+"""
 
+VANA VERSIOON,
+ei sobi uue struktuuriga,
+uus versioon on map2.py-s.
+
+"""
 class Map:
     def __init__(self, images):
         self.map = None

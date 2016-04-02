@@ -13,7 +13,7 @@ class Camera:
         joonistab kõik ekraanile
         :param screen: aken
         :param map: kaart, listina
-        :param characters: dictionary NPC'dest, praegu implementeerimata
+        :param characters: dictionary elusolenditest, praegu ainult mängija
         :return: aken
         """
         # draw map

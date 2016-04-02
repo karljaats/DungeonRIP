@@ -12,23 +12,23 @@ class Map:
         self.objects = {
             "wall": {
                 "image": images["wall"],
-                "passable": False,
-                "diggable": True
+                "passable": False
             },
             "floor": {
                 "image": images["floor"],
-                "passable": True,
-                "diggable": False
+                "passable": True
             },
             "stair_up": {
                 "image": images["stair_up"],
-                "passable": True,
-                "diggable": False
+                "passable": True
             },
             "stair_down": {
                 "image": images["stair_down"],
-                "passable": True,
-                "diggable": False
+                "passable": True
+            },
+            "enclosed_wall": {
+                "image": images["black"],
+                "passable": False
             }
         }
 
@@ -48,22 +48,141 @@ class Map:
         self.map = []
         gen_points = []  # punktid, kust genereeritakse uusi ruume
 
+        feature_list = self.create_feature_list()
+
         # tee list ning täida see seintega
-        for x in range(self.width):
+        for p in range(self.width):
             self.map.append([])
-            for y in range(self.height):
-                self.map[x].append("wall")
+            for q in range(self.height):
+                self.map[p].append("wall")
 
         # loo algne ruum
         dimensions = [random.randint(4, 10), random.randint(4, 10)]
         pos = [random.randint(self.width//2 - 20, self.width//2 + 20), random.randint(self.height//2 - 20, self.height//2 + 20)]
         self.fill(pos, dimensions, "floor")
         player_pos = [random.randint(pos[0], pos[0] + dimensions[0]-1), random.randint(pos[1], pos[1] + dimensions[1]-1)]
-        gen_points = self.generate_gen_points(gen_points, pos, dimensions, random.randint(1, 6))
+        gen_points = self.generate_gen_points(gen_points, pos, dimensions)
 
         # genereeri ülejäänud kaart
-        for i in range(tries):
-            pass
+        for a in range(tries):
+            point = gen_points[random.randint(0, len(gen_points)-1)]
+            x = point[0]
+            y = point[1]
+
+            feature = feature_list[random.randint(0, len(feature_list)-1)]
+
+            # leia suund
+            if self.map[x+1][y] == "floor":
+                direction = "W"
+            elif self.map[x-1][y] == "floor":
+                direction = "E"
+            elif self.map[x][y+1] == "floor":
+                direction = "N"
+            elif self.map[x][y-1] == "floor":
+                direction = "S"
+
+            if feature == "room":
+                feature_width = random.randint(4, 10)
+                feature_height = random.randint(4, 10)
+            elif feature == "corridor":
+                if direction == "N" or direction == "S":
+                    feature_width = 1
+                    feature_height = random.randint(4, 15)
+                if direction == "E" or direction == "W":
+                    feature_width = random.randint(4, 15)
+                    feature_height = 1
+
+            if feature == "corridor":
+                corridor_length = 0
+                if direction == "N":
+                    top_left = [x, y-feature_height+1]
+                    for i in range(feature_height):
+                        if y-i > 0:
+                            self.map[x][y-i] = "floor"
+                            corridor_length += 1
+                            if self.map[x-1][y-i-1] != "wall" or self.map[x][y-i-1] != "wall" or self.map[x+1][y-i-1] != "wall":
+                                top_left = [x, y-i]
+                                break
+                elif direction == "E":
+                    top_left = [x, y]
+                    for i in range(feature_width):
+                        if x+i < self.width-1:
+                            self.map[x+i][y] = "floor"
+                            corridor_length += 1
+                            if self.map[x+i+1][y-1] != "wall" or self.map[x+i+1][y] != "wall" or self.map[x+i+1][y+1] != "wall":
+                                break
+                elif direction == "S":
+                    top_left = [x, y]
+                    for i in range(feature_height):
+                        if y+i < self.height-1:
+                            self.map[x][y+i] = "floor"
+                            corridor_length += 1
+                            if self.map[x-1][y+i+1] != "wall" or self.map[x][y+i+1] != "wall" or self.map[x+1][y+i+1] != "wall":
+                                break
+                elif direction == "W":
+                    top_left = [x-feature_width+1, y]
+                    for i in range(feature_width):
+                        if x-i > 0:
+                            self.map[x-i][y] = "floor"
+                            corridor_length += 1
+                            if self.map[x-i-1][y-1] != "wall" or self.map[x-i-1][y] != "wall" or self.map[x-i-1][y+1] != "wall":
+                                top_left = [x-i, y]
+                                break
+
+                gen_points.remove(point)
+                if corridor_length > 3:
+                    if direction == "W" or direction == "E":
+                        gen_points = self.generate_gen_points(gen_points, top_left, [corridor_length, 1])
+                    else:
+                        gen_points = self.generate_gen_points(gen_points, top_left, [1, corridor_length])
+
+            elif feature == "room":
+                # leia uue toa ülemise vasaku põranda koordinaadid
+                if direction == "N":
+                    top_left = [x-random.randint(0, feature_width-1), y-feature_height]
+                elif direction == "E":
+                    top_left = [x+1, y-random.randint(0, feature_height-1)]
+                elif direction == "S":
+                    top_left = [x-random.randint(0, feature_width-1), y+1]
+                elif direction == "W":
+                    top_left = [x-feature_width, y-random.randint(0, feature_height-1)]
+
+                # kas ruum jääb kaardi sisse
+                if not 0 < top_left[0] < self.width or not 0 < top_left[1] < self.height or not 0 < top_left[0]\
+                        + feature_width < self.width or not 0 < top_left[1] + feature_height < self.height:
+                    continue
+
+                enough_room = True
+                for k in range(feature_width+2):
+                    for j in range(feature_height+2):
+                        if self.map[top_left[0]-1+k][top_left[1]-1+j] != "wall":
+                            enough_room = False
+                            break
+                    if not enough_room:
+                        break
+
+                if not enough_room:
+                    continue
+
+                # pane ruum kaardile
+                self.map[x][y] = "floor"  # uksekoht
+                for k in range(feature_width):
+                    for j in range(feature_height):
+                        self.map[top_left[0]+k][top_left[1]+j] = "floor"
+
+                gen_points.remove(point)
+                gen_points = self.generate_gen_points(gen_points, top_left, [feature_width, feature_height])
+
+        # muuda kõik täielikult ligipääsmatud seinad mustaks
+        for x in range(self.width):
+            for y in range(self.height):
+                if x == 0 or y == 0 or x == self.width-1 or y == self.width-1:
+                    self.map[x][y] = "enclosed_wall"
+                else:
+                    if self.map[x][y] != "floor" and self.map[x][y-1] != "floor" and self.map[x][y+1] != "floor" and \
+                                self.map[x-1][y-1] != "floor" and self.map[x-1][y] != "floor" and self.map[x-1][y+1] != "floor" and \
+                                self.map[x+1][y-1] != "floor" and self.map[x+1][y] != "floor" and self.map[x+1][y+1] != "floor":
+                        self.map[x][y] = "enclosed_wall"
 
         return player_pos
 
@@ -78,30 +197,52 @@ class Map:
             for y in range(0, dimensions[1]):
                 self.map[x+pos[0]][y+pos[1]] = tile_type
 
-    def generate_gen_points(self, gen_points, room_pos, room_dimensions, number_of_points):
+    def generate_gen_points(self, gen_points, room_pos, room_dimensions):
         """
         Genereerib kindla arvu punkte antud ruumi seintes kust generatsioon saab jätkuda
         :param gen_points: list kogu kaardi generatsiooni punktidest
         :param room_pos: ruumi kõige ülemise vasakpoolsema floor tile'i asukoht
         :param room_dimensions: ruumi põranda positsioon
-        :param number_of_points: genereeritavate punktide arv
         :return: uuendatud gen_points, nüüd ka selle ruumi punktidega
         """
+        number_of_points = random.randint(2, 6)
         room_pos[0] -= 1
         room_pos[1] -= 1
         for i in range(number_of_points):
-            while True:
+            count = 0
+            while count < 100:
+                count += 1
                 point = [random.randint(0, room_dimensions[0]+1), random.randint(0, room_dimensions[1]+1)]
                 # kui punkt pole nurga seintes
                 if point not in [[0, 0], [0, room_dimensions[1]+1], [room_dimensions[0]+1, 0], [room_dimensions[0]+1, room_dimensions[1]+1]]:
                     # kui tile on wall tüüpi
                     if self.map[point[0] + room_pos[0]][point[1] + room_pos[1]] == "wall":
                         # kui juba pole gen_pointi selle punkti kõrval
-                        if [point[0]+room_pos[0], point[1]+room_pos[1]] not in gen_points or \
-                                    [point[0]+room_pos[0]-1, point[1]+room_pos[1]] not in gen_points or \
-                                    [point[0]+room_pos[0]+1, point[1]+room_pos[1]] not in gen_points or \
-                                    [point[0]+room_pos[0], point[1]+room_pos[1]-1] not in gen_points or \
+                        if [point[0]+room_pos[0], point[1]+room_pos[1]] not in gen_points and \
+                                    [point[0]+room_pos[0]-1, point[1]+room_pos[1]] not in gen_points and \
+                                    [point[0]+room_pos[0]+1, point[1]+room_pos[1]] not in gen_points and \
+                                    [point[0]+room_pos[0], point[1]+room_pos[1]-1] not in gen_points and \
                                     [point[0]+room_pos[0], point[1]+room_pos[1]+1] not in gen_points:
                             gen_points.append([point[0]+room_pos[0], point[1]+room_pos[1]])
                             break
         return gen_points
+
+    def create_feature_list(self):
+        """
+        Teeb listi võimalikest struktuuridest nende esinemise tõenäosuse järgi, et kasutada koos
+        random number generaatoriga
+        :return: list õiges suhtes korduvate featuritest
+        """
+        feature_list = []
+
+        # ei pea kokku andma 100
+        probabilities = {
+                    "room": 70,
+                    "corridor": 30
+                }
+
+        for feature in probabilities:
+            for i in range(probabilities[feature]):
+                feature_list.append(feature)
+
+        return feature_list
