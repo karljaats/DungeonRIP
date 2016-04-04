@@ -2,7 +2,7 @@ import pygame
 import shared_vars
 from camera import Camera
 from player import Player
-from map2 import Map
+from map import Map
 
 
 class Game:
