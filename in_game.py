@@ -58,4 +58,4 @@ class Game:
 
     def draw(self, screen):
         self.camera.center(self.map.width, self.map.height, self.player.x, self.player.y)
-        return self.camera.draw(screen, self.map, self.characters)
+        self.camera.draw(screen, self.map, self.characters)

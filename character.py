@@ -1,5 +1,6 @@
 import pygame
 
+
 class Character:
     def __init__(self, x, y, images, name):
         self.image = images[name]

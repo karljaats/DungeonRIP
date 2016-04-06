@@ -16,21 +16,22 @@ class Camera:
         :param characters: dictionary elusolenditest, praegu ainult mängija
         :return: aken
         """
-        # draw map
+        # joonista kaart
         for x in range(0, self.width):
             for y in range(0, self.height):
                 tile_type = map.map[self.x + x][self.y + y]
                 destination = (x*self.tile_size, y*self.tile_size)
                 screen.blit(map.objects[tile_type]["image"], destination)
 
-        # draw characters
+        # joonista tegelased
         for dude in characters:
-            char = characters[dude]  # object of the characters class
-            # Is it on the screen?
+            char = characters[dude]  # Character klassi object
+            # On see ekraanil
             if self.x + self.width > char.x >= self.x and self.y + self.height > char.y >= self.y:
                 screen.blit(char.image, ((char.x-self.x)*self.tile_size, (char.y-self.y)*self.tile_size))
-
-        return screen
+                health_amount = char.current_health / char.max_health
+                screen.fill((255, 0, 0), ((char.x-self.x)*self.tile_size, (char.y-self.y)*self.tile_size+18, 20, 2))
+                screen.fill((0, 255, 0), ((char.x-self.x)*self.tile_size, (char.y-self.y)*self.tile_size+18, 20*health_amount, 2))
 
     def center(self, map_width, map_height, player_x, player_y):
         """
