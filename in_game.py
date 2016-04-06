@@ -12,7 +12,8 @@ class Game:
                        "player": pygame.image.load("pics/player.png").convert(),
                        "stair_up": pygame.image.load("pics/stair_up.png").convert(),
                        "stair_down": pygame.image.load("pics/stair_down.png").convert(),
-                       "black": pygame.image.load("pics/black.png").convert()}
+                       "black": pygame.image.load("pics/black.png").convert(),
+                       "monster": pygame.image.load("pics/monster.png").convert()}
 
         self.camera = Camera(shared_vars.screen_w, shared_vars.screen_h, shared_vars.tile_size)
 
