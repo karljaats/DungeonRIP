@@ -40,6 +40,17 @@ class Game:
                 self.player.move(0, -1, self.map)
             elif event.key == pygame.K_KP9:
                 self.player.move(1, -1, self.map)
+            elif event.key == pygame.K_LESS:
+                if self.map.map[self.player.x][self.player.y] == "stair_up":
+                    self.map.level -= 1
+                    player_pos = self.map.generate_map()
+                    self.player.x = player_pos[0]
+                    self.player.y = player_pos[1]
+                elif self.map.map[self.player.x][self.player.y] == "stair_down":
+                    self.map.level += 1
+                    player_pos = self.map.generate_map()
+                    self.player.x = player_pos[0]
+                    self.player.y = player_pos[1]
 
     def update(self):
         pass

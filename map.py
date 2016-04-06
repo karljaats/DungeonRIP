@@ -191,6 +191,20 @@ class Map:
                     if not self.visibility_map[x][y]:
                         self.map[x][y] = "enclosed_wall"
 
+            # genereeri treppe
+            for i in range(2):
+                while True:
+                    stair_pos = [random.randint(0, self.width-1), random.randint(0, self.height-1)]
+                    if self.map[stair_pos[0]][stair_pos[1]] == "floor":
+                        self.map[stair_pos[0]][stair_pos[1]] = "stair_down"
+                        break
+                if self.level > 1:
+                    while True:
+                        stair_pos = [random.randint(0, self.width-1), random.randint(0, self.height-1)]
+                        if self.map[stair_pos[0]][stair_pos[1]] == "floor":
+                            self.map[stair_pos[0]][stair_pos[1]] = "stair_up"
+                            break
+
             return player_pos
         except IndexError:
             print("Map generation failed")
