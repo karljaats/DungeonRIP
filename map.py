@@ -290,3 +290,14 @@ class Map:
         self.visibility_map[x+1][y-1] = True
         self.visibility_map[x+1][y] = True
         self.visibility_map[x+1][y+1] = True
+
+    def generate_monster(self):
+        """
+        Genereerib ühe kolli
+        :return: kolli asukoht
+        """
+        while True:
+            pos = [random.randint(0, self.width-1), random.randint(0, self.height-1)]
+            if self.map[pos[0]][pos[1]] == "floor":
+                break
+        return pos

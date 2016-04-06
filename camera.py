@@ -8,7 +8,7 @@ class Camera:
         self.height = screen_h - self.overlay_bottom_h
         self.tile_size = tile_size
 
-    def draw(self, screen, map, characters):
+    def draw(self, screen, map, monsters, player):
         """
         joonistab kõik ekraanile
         :param screen: aken
@@ -23,15 +23,20 @@ class Camera:
                 destination = (x*self.tile_size, y*self.tile_size)
                 screen.blit(map.objects[tile_type]["image"], destination)
 
-        # joonista tegelased
-        for dude in characters:
-            char = characters[dude]  # Character klassi object
+        # joonista mängija
+        screen.blit(player.image, ((player.x-self.x)*self.tile_size, (player.y-self.y)*self.tile_size))
+        health_amount = player.current_health / player.max_health
+        screen.fill((255, 0, 0), ((player.x-self.x)*self.tile_size, (player.y-self.y)*self.tile_size+18, 20, 2))
+        screen.fill((0, 255, 0), ((player.x-self.x)*self.tile_size, (player.y-self.y)*self.tile_size+18, 20*health_amount, 2))
+
+        # joonista vaenlased
+        for monster in monsters:
             # On see ekraanil
-            if self.x + self.width > char.x >= self.x and self.y + self.height > char.y >= self.y:
-                screen.blit(char.image, ((char.x-self.x)*self.tile_size, (char.y-self.y)*self.tile_size))
-                health_amount = char.current_health / char.max_health
-                screen.fill((255, 0, 0), ((char.x-self.x)*self.tile_size, (char.y-self.y)*self.tile_size+18, 20, 2))
-                screen.fill((0, 255, 0), ((char.x-self.x)*self.tile_size, (char.y-self.y)*self.tile_size+18, 20*health_amount, 2))
+            if self.x + self.width > monster.x >= self.x and self.y + self.height > monster.y >= self.y:
+                screen.blit(monster.image, ((monster.x-self.x)*self.tile_size, (monster.y-self.y)*self.tile_size))
+                health_amount = monster.current_health / monster.max_health
+                screen.fill((255, 0, 0), ((monster.x-self.x)*self.tile_size, (monster.y-self.y)*self.tile_size+18, 20, 2))
+                screen.fill((0, 255, 0), ((monster.x-self.x)*self.tile_size, (monster.y-self.y)*self.tile_size+18, 20*health_amount, 2))
 
     def center(self, map_width, map_height, player_x, player_y):
         """

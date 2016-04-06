@@ -3,6 +3,7 @@ import shared_vars
 from camera import Camera
 from player import Player
 from map import Map
+from monster import Monster
 
 
 class Game:
@@ -21,7 +22,7 @@ class Game:
         player_pos = self.map.generate_map()
 
         self.player = Player(player_pos[0], player_pos[1], self.images)
-        self.characters = {"player": self.player}
+        self.monsters = []
 
     def on_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -44,18 +45,22 @@ class Game:
             elif event.key == pygame.K_LESS:
                 if self.map.map[self.player.x][self.player.y] == "stair_up":
                     self.map.level -= 1
+                    self.monsters = []
                     player_pos = self.map.generate_map()
                     self.player.x = player_pos[0]
                     self.player.y = player_pos[1]
                 elif self.map.map[self.player.x][self.player.y] == "stair_down":
                     self.map.level += 1
+                    self.monsters = []
                     player_pos = self.map.generate_map()
                     self.player.x = player_pos[0]
                     self.player.y = player_pos[1]
 
     def update(self):
-        pass
+        while len(self.monsters) < 10:
+            monster_pos = self.map.generate_monster()
+            self.monsters.append(Monster(monster_pos[0], monster_pos[1], self.images))
 
     def draw(self, screen):
         self.camera.center(self.map.width, self.map.height, self.player.x, self.player.y)
-        self.camera.draw(screen, self.map, self.characters)
+        self.camera.draw(screen, self.map, self.monsters, self.player)

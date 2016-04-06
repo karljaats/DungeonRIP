@@ -13,7 +13,6 @@ class Player(Character):
         :param dif_y: muutus y suunas
         :param map: kaart
         """
-        print(self.x, self.y)
         if map.objects[map.map[self.x + dif_x][self.y + dif_y]]["passable"]:
             self.x += dif_x
             self.y += dif_y
