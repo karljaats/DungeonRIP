@@ -5,7 +5,7 @@ class Character:
         self.x = x  # tiledes, mitte pixlites
         self.y = y
 
-        self.max_health = 10
+        self.max_health = 5
         self.current_health = self.max_health
         self.attack = 1
 

@@ -5,6 +5,9 @@ class Player(Character):
     def __init__(self, x, y, images):
         super().__init__(x, y, images, "player")
 
+        self.max_health = 20
+        self.current_health = self.max_health
+
     def move(self, dif_x, dif_y, map):
         """
         Liigu antud suunas

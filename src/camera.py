@@ -1,12 +1,11 @@
 class Camera:
-    def __init__(self, screen_w, screen_h, tile_size, x=0, y=0):
+    def __init__(self, screen_w, screen_h, tile_size, font, x=0, y=0):
         self.x = x
         self.y = y
-        self.overlay_bottom_h = 0
-        self.overlay_side_w = 0
-        self.width = screen_w - self.overlay_side_w
-        self.height = screen_h - self.overlay_bottom_h
+        self.width = screen_w
+        self.height = screen_h
         self.tile_size = tile_size
+        self.font = font
 
     def draw(self, screen, map, monsters, player):
         """
@@ -19,7 +18,7 @@ class Camera:
         """
         # joonista kaart
         for x in range(0, self.width):
-            for y in range(0, self.height):
+            for y in range(0, self.height-2):
                 tile_type = map.map[self.x + x][self.y + y]
                 destination = (x*self.tile_size, y*self.tile_size)
                 screen.blit(map.objects[tile_type]["image"], destination)
@@ -38,6 +37,12 @@ class Camera:
                 health_amount = monster.current_health / monster.max_health
                 screen.fill((255, 0, 0), ((monster.x-self.x)*self.tile_size, (monster.y-self.y)*self.tile_size+18, 20, 2))
                 screen.fill((0, 255, 0), ((monster.x-self.x)*self.tile_size, (monster.y-self.y)*self.tile_size+18, 20*health_amount, 2))
+
+        # joonista riba info jaoks
+        screen.fill((0, 0, 0), (0, (self.height-2)*self.tile_size, self.width*self.tile_size, 40))
+        screen.fill((127, 127, 127), (0, (self.height-2)*self.tile_size, self.width*self.tile_size, 2))
+        screen.blit(self.font.render("Health: " + str(player.current_health) + "/" + str(player.max_health), True, (255, 255, 255)), (10, (self.height-2)*self.tile_size+10))
+        screen.blit(self.font.render("L" + str(map.level), True, (255, 255, 255)), (self.width*self.tile_size-60, (self.height-2)*self.tile_size+10))
 
     def center(self, map_width, map_height, player_x, player_y):
         """

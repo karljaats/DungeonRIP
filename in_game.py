@@ -13,7 +13,8 @@ class Game:
                        "black": pygame.image.load("pics/black.png").convert(),
                        "monster": pygame.image.load("pics/monster.png").convert()}
 
-        self.camera = Camera(shared_vars.screen_w, shared_vars.screen_h, shared_vars.tile_size)
+        font = pygame.font.Font(None, 28)
+        self.camera = Camera(shared_vars.screen_w, shared_vars.screen_h, shared_vars.tile_size, font)
 
         self.map = Map(self.images)
         player_pos = self.map.generate_map()
