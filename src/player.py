@@ -1,4 +1,3 @@
-import pygame
 from character import Character
 
 
@@ -12,6 +11,7 @@ class Player(Character):
         :param dif_x: muutus x suunas
         :param dif_y: muutus y suunas
         :param map: kaart
+        :return: None
         """
         if map.objects[map.map[self.x + dif_x][self.y + dif_y]]["passable"]:
             self.x += dif_x

@@ -216,6 +216,7 @@ class Map:
         :param pos: algpunkt(kaasa arvatud)
         :param dimensions: filli dimensioonid
         :param tile_type: tile_type milleks ala muuta
+        :return: None
         """
         for x in range(0, dimensions[0]):
             for y in range(0, dimensions[1]):
@@ -277,6 +278,7 @@ class Map:
         """
         Muudab kõik antud tile ja selle ümber oleva nähtavaks
         :param pos: tile positsioon
+        :return: None
         """
         x = pos[0]
         y = pos[1]
@@ -296,6 +298,7 @@ class Map:
         Genereerib ühe kolli
         :return: kolli asukoht
         """
+        pos = [0, 0]
         while True:
             pos = [random.randint(0, self.width-1), random.randint(0, self.height-1)]
             if self.map[pos[0]][pos[1]] == "floor":

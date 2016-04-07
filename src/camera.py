@@ -13,7 +13,8 @@ class Camera:
         joonistab kõik ekraanile
         :param screen: aken
         :param map: kaart, listina
-        :param characters: dictionary elusolenditest, praegu ainult mängija
+        :param monsters: dictionary vaenlastest
+        :param player: mängija objekt
         :return: aken
         """
         # joonista kaart
@@ -45,6 +46,7 @@ class Camera:
         :param map_height: kaardi kõrgus, tile'ides
         :param player_x: mängija x koordinaat, kaardi koordinaatides
         :param player_y: mängija y koordinaat, kaardi koordinaatides
+        :return: None
         """
         x = player_x - self.width//2
         y = player_y - self.height//2

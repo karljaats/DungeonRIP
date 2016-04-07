@@ -1,9 +1,6 @@
 import pygame
 import shared_vars
-from camera import Camera
-from player import Player
-from map import Map
-from monster import Monster
+from src import Camera, Map, Monster, Player
 
 
 class Game:
