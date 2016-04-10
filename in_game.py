@@ -22,24 +22,28 @@ class Game:
         self.player = Player(player_pos[0], player_pos[1], self.images)
         self.monsters = []
 
+        self.process_turn()
+
     def on_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_KP1:
-                self.player.move(-1, 1, self.map)
+                self.player.move(-1, 1, self.map, self.monsters)
             elif event.key == pygame.K_DOWN or event.key == pygame.K_KP2:
-                self.player.move(0, 1, self.map)
+                self.player.move(0, 1, self.map, self.monsters)
             elif event.key == pygame.K_KP3:
-                self.player.move(1, 1, self.map)
+                self.player.move(1, 1, self.map, self.monsters)
             elif event.key == pygame.K_LEFT or event.key == pygame.K_KP4:
-                self.player.move(-1, 0, self.map)
+                self.player.move(-1, 0, self.map, self.monsters)
             elif event.key == pygame.K_RIGHT or event.key == pygame.K_KP6:
-                self.player.move(1, 0, self.map)
+                self.player.move(1, 0, self.map, self.monsters)
             elif event.key == pygame.K_KP7:
-                self.player.move(-1, -1, self.map)
+                self.player.move(-1, -1, self.map, self.monsters)
             elif event.key == pygame.K_UP or event.key == pygame.K_KP8:
-                self.player.move(0, -1, self.map)
+                self.player.move(0, -1, self.map, self.monsters)
             elif event.key == pygame.K_KP9:
-                self.player.move(1, -1, self.map)
+                self.player.move(1, -1, self.map, self.monsters)
+            elif event.key == pygame.K_KP5:
+                pass  # oota üks käik
             elif event.key == pygame.K_LESS:
                 if self.map.map[self.player.x][self.player.y] == "stair_up":
                     self.map.level -= 1
@@ -53,12 +57,31 @@ class Game:
                     player_pos = self.map.generate_map()
                     self.player.x = player_pos[0]
                     self.player.y = player_pos[1]
+            self.process_turn()
 
+    # kutsutakse iga frame
     def update(self):
-        while len(self.monsters) < 10:
-            monster_pos = self.map.generate_monster()
-            self.monsters.append(Monster(monster_pos[0], monster_pos[1], self.images))
+        pass
 
     def draw(self, screen):
         self.camera.center(self.map.width, self.map.height, self.player.x, self.player.y)
         self.camera.draw(screen, self.map, self.monsters, self.player)
+
+    # kutsutakse kui midagi juhtub
+    def process_turn(self):
+        self.player.update()
+
+        dead_monsters = []
+        for i in range(len(self.monsters)):
+            monster = self.monsters[i]
+            if monster.current_health <= 0:
+                dead_monsters.append(i)
+            else:
+                monster.update(self.map, self.player)
+
+        for i in dead_monsters:
+            self.monsters.pop(i)
+
+        while len(self.monsters) < 10:
+            monster_pos = self.map.generate_monster(self.camera)
+            self.monsters.append(Monster(monster_pos[0], monster_pos[1], self.images))

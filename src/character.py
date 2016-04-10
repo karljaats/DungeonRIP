@@ -9,7 +9,7 @@ class Character:
         self.current_health = self.max_health
         self.attack = 1
 
-    def damage(self, damage):
+    def take_damage(self, damage):
         """
         Kui tegelane saab haiget
         :param damage: damage hulk

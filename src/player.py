@@ -7,8 +7,12 @@ class Player(Character):
 
         self.max_health = 20
         self.current_health = self.max_health
+        self.attack = 2
 
-    def move(self, dif_x, dif_y, map):
+        self.regen_time = 5
+        self.regen_timer = self.regen_time
+
+    def move(self, dif_x, dif_y, map, monsters):
         """
         Liigu antud suunas
         :param dif_x: muutus x suunas
@@ -16,6 +20,18 @@ class Player(Character):
         :param map: kaart
         :return: None
         """
-        if map.objects[map.map[self.x + dif_x][self.y + dif_y]]["passable"]:
+        is_monster = False
+        for monster in monsters:
+            if self.x + dif_x == monster.x and self.y + dif_y == monster.y:
+                monster.take_damage(self.attack)
+                is_monster = True
+        if not is_monster and map.objects[map.map[self.x + dif_x][self.y + dif_y]]["passable"]:
             self.x += dif_x
             self.y += dif_y
+
+    def update(self):
+        if self.current_health < self.max_health:
+            self.regen_timer -= 1
+            if self.regen_timer == 0:
+                self.current_health += 1
+                self.regen_timer = self.regen_time
