@@ -296,6 +296,7 @@ class Map:
     def generate_monster(self, camera):
         """
         Genereerib ühe kolli
+        :param camera: kaamera object, et mitte genereerida vaenlasi nähtavasse kohta
         :return: kolli asukoht
         """
         pos = [0, 0]

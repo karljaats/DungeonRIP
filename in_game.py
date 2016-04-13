@@ -77,7 +77,7 @@ class Game:
             if monster.current_health <= 0:
                 dead_monsters.append(i)
             else:
-                monster.update(self.map, self.player)
+                monster.update(self.map, self.player, self.monsters)
 
         for i in dead_monsters:
             self.monsters.pop(i)
