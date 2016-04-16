@@ -30,6 +30,10 @@ class Player(Character):
             self.y += dif_y
 
     def update(self):
+        """
+        elu regenereerimine
+        :return: None
+        """
         if self.current_health < self.max_health:
             self.regen_timer -= 1
             if self.regen_timer == 0:

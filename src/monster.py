@@ -9,6 +9,13 @@ class Monster(Character):
         self.alert_range = 10
 
     def update(self, map, player, monsters):
+        """
+        vaenlase käik
+        :param map: kaart
+        :param player: mängija
+        :param monsters: list kõigist vaenlastest
+        :return: None
+        """
         if player.x in [self.x-1, self.x, self.x+1] and player.y in [self.y-1, self.y, self.y+1]:
             player.take_damage(self.attack)
         elif self.x - self.alert_range < player.x < self.x + self.alert_range and self.y - self.alert_range < player.y < self.y + self.alert_range:

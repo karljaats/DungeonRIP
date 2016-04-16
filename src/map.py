@@ -8,7 +8,7 @@ class Map:
         self.images = images
         self.width = 0
         self.height = 0
-        self.level = 1  # praegune sügavuse raske
+        self.level = 1  # praegune sügavuse aste
 
         self.objects = {
             "wall": {
@@ -40,6 +40,7 @@ class Map:
         :param size_y: kaardi suurus tile-ides
         :return: Mängija algpositsioon
         """
+        # kui midagi valesti läheb proovi uuesti
         try:
             self.width = size_x
             self.height = size_y
@@ -207,7 +208,7 @@ class Map:
 
             return player_pos
         except IndexError:
-            print("Map generation failed")
+            print("Map generation failed. Restarting.")
             return self.generate_map(size_x, size_y)
 
     def fill(self, pos, dimensions, tile_type):

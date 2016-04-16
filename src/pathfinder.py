@@ -1,4 +1,11 @@
 def find_path(start, end, map):
+    """
+    Leia kõige otsem tee, kasutab A* algoritmi
+    :param start: algus punkti koordinaadid
+    :param end: lõpp punkti koordinaadid
+    :param map: kaart
+    :return: Tee kõige esimese sammu koordinaadid
+    """
     start = (start[0], start[1])
     end = (end[0], end[1])
 
@@ -69,6 +76,12 @@ def find_path(start, end, map):
 
 
 def heuristic_cost(start, goal):
+    """
+    pakutav tee pikkus lõpp punkti
+    :param start: alguspunkt
+    :param goal: lõpppunkt
+    :return: tee pikkus ehk hind
+    """
     vector = [abs(start[0]-goal[0]), abs(start[1] - goal[1])]
     diagonal_movement = min(vector)
     other_movement = abs(vector[0]-vector[1])
@@ -76,6 +89,12 @@ def heuristic_cost(start, goal):
 
 
 def reconstruct_path(came_from, current):
+    """
+    Lõpppunktist tagsi kõige efektiivsema tee konstrueerimine
+    :param came_from: dictionary kõigist tiledest ja kuidas nendele kõige efektiivsemalt saab
+    :param current: lõpppunkt
+    :return: Kõige esimese sammu koordinaadid
+    """
     total_path = []
     while current in came_from.keys():
         current = came_from[current]

@@ -20,6 +20,11 @@ while not shared_vars.quit_game:
         else:
             shared_vars.state.on_event(event)
 
+    if shared_vars.restart:
+        shared_vars.game = Game()
+        shared_vars.state = shared_vars.game
+        shared_vars.restart = False
+
     shared_vars.state.update()
     shared_vars.state.draw(screen)
 

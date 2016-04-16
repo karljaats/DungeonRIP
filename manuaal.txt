@@ -1,0 +1,10 @@
+Nupud:
+liikumine: numpad/nooled (numpadiga saab liikuda ka diagonaalis)
+oota üks käik: 5
+treppidest üles/alla minek: <
+alusta otsat peale: tühik
+
+Ründamiseks liigu lihtsalt vaenlasele peale.
+Elu tuleb aeglaselt tagasi.
+Vaenlaseid tappes tekib neid juurde ka.
+All paremas nurgas on korruse number.
