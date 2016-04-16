@@ -5,7 +5,7 @@ from in_game import Game
 pygame.init()
 
 screen = pygame.display.set_mode((shared_vars.screen_w * shared_vars.tile_size, shared_vars.screen_h * shared_vars.tile_size))
-pygame.display.set_caption("Dungeon")
+pygame.display.set_caption("Lil' Orcish Dungeon")
 
 clock = pygame.time.Clock()
 
