@@ -303,7 +303,7 @@ class Map:
         pos = [0, 0]
         while True:
             pos = [random.randint(0, self.width-1), random.randint(0, self.height-1)]
-            if (pos[0] < camera.x or pos[0] > camera.x + camera.width) and (pos[1] < camera.y or pos[1] > camera.y + camera.height):
+            if (pos[0] < camera.x or pos[0] > camera.x + camera.width) or (pos[1] < camera.y or pos[1] > camera.y + camera.height):
                 if self.map[pos[0]][pos[1]] == "floor":
                     break
         return pos
