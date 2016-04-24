@@ -1,8 +1,12 @@
+Mängul otsene eesmärk/lõpp puudub.
+Võitle vaenlastega, jookse ringi, mine sügavamale maa alla, ära surma saa.
+
+
 Nupud:
 liikumine: numpad/nooled (numpadiga saab liikuda ka diagonaalis)
 oota üks käik: 5
 treppidest üles/alla minek: <
-alusta otsat peale: tühik
+alusta otsat peale(pärast surma saamist): tühik
 
 Ründamiseks liigu lihtsalt vaenlasele peale.
 Elu tuleb aeglaselt tagasi.

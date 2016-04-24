@@ -35,7 +35,15 @@ class Map:
 
     def generate_map(self, size_x=100, size_y=100):
         """
-        genereerib listi tile_type-idest, mis representeerib kaarti
+        Genereerib listi tile_type-idest, mis representeerib kaarti.
+
+        Tööpõhimõte seisneb selles, et alustuseks genereeritakse umbes kaardi keskele üks ruum, et kusagilt alustada.
+        Seejärel genereeritakse selle ruumi jaoks mõned punktid seintes, kust saaks uusi ruume teha, need pannakse listi.
+        Siis võetakse listist suvaline punkt ja korratakse kõike uuesti alustades sellest punktist.
+        Ruume genereerides kontrollitakse, kas selle jaoks on ikka ruumi, ja kui pole siis katkestatakse töö. Koridore,
+        aga genereeritakse järjest ja kui see lõikub millegai, siis lõpetatakse see seal ära, aga ülejäänu genereeritakse
+        ikkagi. See on selleks, et oleks lisa ühendukohti ja ei tekiks puu sarnane kaart.
+
         :param size_x: kaardi suurus tile-ides
         :param size_y: kaardi suurus tile-ides
         :return: Mängija algpositsioon
