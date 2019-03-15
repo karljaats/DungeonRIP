@@ -1,5 +1,5 @@
-from character import Character
-from pathfinder import find_path
+from src.character import Character
+from src.pathfinder import find_path
 
 
 class Monster(Character):
